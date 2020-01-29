@@ -3,8 +3,8 @@ from datetime import datetime
 import os 
 
 model_cfg = {
-    'word_level': True,   # set to True if want to train a word-level model (requires more data and smaller max_length)
-    'rnn_size': 1200,   # number of LSTM cells of each layer (128/256 recommended)
+    'word_level': False,   # set to True if want to train a word-level model (requires more data and smaller max_length)
+    'rnn_size': 700,   # number of LSTM cells of each layer (128/256 recommended)
     'rnn_layers': 5,   # number of LSTM layers (>=2 recommended)
     'rnn_bidirectional': True,   # consider text both forwards and backward, can give a training boost
     'max_length': 7,   # number of tokens to consider before predicting the next (20-40 for characters, 5-10 for words recommended)
@@ -13,7 +13,7 @@ model_cfg = {
 
 train_cfg = {
     'line_delimited': True,   # set to True if each text has its own line in the source file
-    'num_epochs': 1000,   # set higher to train the model for longer
+    'num_epochs': 700,   # set higher to train the model for longer
     'gen_epochs': 50,   # generates sample text from model after given number of epochs
     'train_size': 0.5,   # proportion of input data to train on: setting < 1.0 limits model from learning perfectly
     'dropout': 0.5,   # ignore a random proportion of source tokens each epoch, allowing model to generalize better
@@ -22,7 +22,7 @@ train_cfg = {
 }
 
 file_name = '../data/title_with_le.csv'
-model_name='v1_700_3'
+model_name='v2_char_700'
 
 textgen = textgenrnn(name=model_name)
 
