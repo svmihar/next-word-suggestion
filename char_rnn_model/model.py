@@ -66,9 +66,9 @@ def save_model(results, params, name):
 		os.makedirs(os.path.join('data', name))
 	pickle.dump(mapping, open(os.path.join('data', name, 'mapping.pkl'), 'wb'))
 	with open(os.path.join('data', name, 'training_history.json'), 'w') as json_out:
-		json.dump(results.history, json_out, indent=2)
+		json.dumps(results.history,indent=2)
 	with open(os.path.join('data', name, 'params.json'), 'w') as json_out:
-		json.dump(params, json_out, indent=2)
+		json.dumps(params, indent=2)
 
 
 # Parameters
