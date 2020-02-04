@@ -1,4 +1,4 @@
-
+import argparse
 from pickle import load
 from keras.models import load_model
 from keras.utils import to_categorical
@@ -85,19 +85,42 @@ def stochastic_beam_generator(model, mapping, seq_length, seed_text, n_chars, k 
 
     return ''.join(output)
 
-model_name = 'titles_bi_7_length'
-sample_len = 7
-sample_start = input('listing name: ').lower()
+
+ap = argparse.ArgumentParser()
+ap.add_argument("-m", "--model", type=str,help='model name')
+ap.add_argument("-l", "--sample_length", type=int,help="length n words")
+args = vars(ap.parse_args())
+
+model_name = args['model']
+sample_len = args['sample_length']
+sample_start = input('Ask me anything: ').lower()
 
 model_path = os.path.join('data', model_name)
 model = load_model(os.path.join(model_path, 'model.h5'))
 mapping = load(open(os.path.join(model_path,'mapping.pkl'), 'rb'))
 with open(os.path.join(model_path, 'params.json'), 'r') as p_in:
-    params = json.loads(p_in.read())
-print(params)
+    params = json.load(p_in)
+
+greedy = True
+sampling = True
 beam = True
 sampling_beam = True
 
+if greedy:
+    sample = greedy_generator(model, mapping, params['sequence_lenght'], sample_start, sample_len)
+    print('\n', 15 * '-', ' Greedy sample starting here')
+    print(sample)
+    sample_name = 'sample_' + str(datetime.datetime.now()).replace(' ','T') + '.txt'
+    with open(os.path.join(model_path, sample_name), 'w') as s_out:
+        s_out.write('Greedy sample: ' + sample)
+
+if sampling:
+    sample = sampling_generator(model, mapping, params['sequence_lenght'], sample_start, sample_len)
+    print('\n', 15 * '-', ' Sampling sample starting here')
+    print(sample)
+    sample_name = 'sample_' + str(datetime.datetime.now()).replace(' ','T') + '.txt'
+    with open(os.path.join(model_path, sample_name), 'w') as s_out:
+        s_out.write('Sampling sample: ' + sample)
 
 if beam:
     sample = beam_generator(model, mapping, params['sequence_lenght'], sample_start, sample_len, 10)

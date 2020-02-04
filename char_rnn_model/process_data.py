@@ -21,13 +21,11 @@ def preprocess(file_name, out_filename):
 	vocab_str = ' ' + string.ascii_letters + ''.join([str(x) for x in range(10)]) + string.punctuation
 	raw_text = ''.join([x for x in raw_text if x in vocab_str])
 
-	length = 10
+	length = 5
 	sequences = list()
 	for i in range(length, len(raw_text)):
 		seq = raw_text[i-length:i+1]
 		sequences.append(seq)
-
-	print(sequences)
 	save_doc(sequences, out_filename)
 
 

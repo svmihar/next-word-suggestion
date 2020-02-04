@@ -1,8 +1,9 @@
 import numpy
 from numpy import array
+import numpy as np
 from keras.utils import to_categorical
 from keras.models import Sequential
-from keras.layers import LSTM, Dropout, Activation, Dense,Bidirectional
+from keras.layers import LSTM, Dropout, Activation, Dense
 from keras.callbacks import EarlyStopping, ModelCheckpoint
 from keras.optimizers import RMSprop
 import pickle
@@ -52,9 +53,9 @@ def build_network(params, model_name):
 	model.add(Dropout(0.4))
 	model.add(LSTM(2 ** 9, return_sequences=True))
 	model.add(Dropout(0.4))
-	model.add(Bidirectional(LSTM(2 ** 9, return_sequences=True)))
+	model.add(LSTM(2 ** 9, return_sequences=True))
 	model.add(Dropout(0.4))
-	model.add(LSTM(2 ** 9, return_sequences=False))
+	model.add(LSTM(2 ** 9))
 	model.add(Dropout(0.4))
 	model.add(Dense(params['vocabulary_size'], activation='softmax'))
 	model.compile(loss=params['loss'], optimizer=params['optimizer'], metrics=params['metrics'])
@@ -66,29 +67,32 @@ def build_network(params, model_name):
 	return model
 
 def save_model(results, params, name):
+	import pandas as pd
 	if not os.path.isdir(os.path.join('data', name)):
 		os.makedirs(os.path.join('data', name))
 	pickle.dump(mapping, open(os.path.join('data', name, 'mapping.pkl'), 'wb'))
-	with open(os.path.join('data', name, 'training_history.json'), 'w') as json_out:
-		json.dumps(str(results.history),indent=2)
+	for k, v in params.items(): 
+		print(k, type(v))
+	#with open(os.path.join('data', name, 'training_history.json'), 'w') as json_out:
+	#	json.dump(results.history, json_out)
 	with open(os.path.join('data', name, 'params.json'), 'w') as json_out:
-		json.dumps(str(params), indent=2)
+		json.dump(params,json_out)
 
 
 # Parameters
 hyperp = {}
 # in_filename = os.path.join('data', 'char_sequences.txt')
-in_filename = 'titles_processed.txt'
-model_name = 'titles_bi_7_length'
+in_filename = 'preprocessed_text'
+model_name = 'v1_title'
 hyperp['loss'] = 'categorical_crossentropy'
 hyperp['optimizer'] = 'adam'
 hyperp['metrics'] = ['accuracy']
-hyperp['training_percentage'] = .8
+hyperp['training_percentage'] = float(.8)
 assert 0 < hyperp['training_percentage'] < 1, 'Training percentage must be value between 0 and 1'
-hyperp['epochs'] = 300
+hyperp['epochs'] = 100
 hyperp['batch_size'] = 1024
 hyperp['random_seed'] = 1
-hyperp['patience'] = 10
+hyperp['patience'] = 5
 
 # Execution
 numpy.random.seed(hyperp['random_seed'])
