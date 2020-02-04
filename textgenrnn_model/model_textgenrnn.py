@@ -4,14 +4,15 @@ import os
 
 model_cfg = {
     'word_level': True,   # set to True if want to train a word-level model (requires more data and smaller max_length)
-    'rnn_size': 256,   # number of LSTM cells of each layer (128/256 recommended)
-    'rnn_layers': 12,   # number of LSTM layers (>=2 recommended)
+    'rnn_size': 1024,   # number of LSTM cells of each layer (128/256 recommended)
+    'rnn_layers': 10,   # number of LSTM layers (>=2 recommended)
     'rnn_bidirectional': True,   # consider text both forwards and backward, can give a training boost
-    'max_length': 10,   # number of tokens to consider before predicting the next (20-40 for characters, 5-10 for words recommended)
+    'max_length': 5,   # number of tokens to consider before predicting the next (20-40 for characters, 5-10 for words recommended)
     'max_words': 100000,   # maximum number of words to model; the rest will be ignored (word-level model only)
 }
 
-train_cfg = {
+train_cfg =
+{
     'line_delimited': True,   # set to True if each text has its own line in the source file
     'num_epochs': 200,   # set higher to train the model for longer
     'gen_epochs': 5,   # generates sample text from model after given number of epochs
@@ -21,8 +22,8 @@ train_cfg = {
     'is_csv': False   # set to True if file is a CSV exported from Excel/BigQuery/pandas
 }
 
-file_name = 'titles.txt'
-model_name='v1'
+file_name = './titles.txt'
+model_name='v1_no_context'
 
 textgen = textgenrnn(name=model_name)
 

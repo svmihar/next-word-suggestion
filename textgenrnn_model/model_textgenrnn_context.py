@@ -3,7 +3,7 @@ from datetime import datetime
 import os 
 
 model_cfg = {
-    'word_level': False,   # set to True if want to train a word-level model (requires more data and smaller max_length)
+    'word_level': True,   # set to True if want to train a word-level model (requires more data and smaller max_length)
     'rnn_size': 700,   # number of LSTM cells of each layer (128/256 recommended)
     'rnn_layers': 5,   # number of LSTM layers (>=2 recommended)
     'rnn_bidirectional': True,   # consider text both forwards and backward, can give a training boost
@@ -22,7 +22,7 @@ train_cfg = {
 }
 
 file_name = '../data/title_with_le.csv'
-model_name='v2_char_700'
+model_name='v2_context'
 
 textgen = textgenrnn(name=model_name)
 

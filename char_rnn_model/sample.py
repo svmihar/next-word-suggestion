@@ -1,4 +1,4 @@
-
+import argparse
 from pickle import load
 from keras.models import load_model
 from keras.utils import to_categorical
@@ -85,8 +85,14 @@ def stochastic_beam_generator(model, mapping, seq_length, seed_text, n_chars, k 
 
     return ''.join(output)
 
-model_name = 'notes_network_220819_1710'
-sample_len = 100
+
+ap = argparse.ArgumentParser()
+ap.add_argument("-m", "--model", type=str,help='model name', required=True)
+ap.add_argument("-l", "--sample_length", type=int,help="length n words", required=True)
+args = vars(ap.parse_args())
+
+model_name = args['model']
+sample_len = args['sample_length']
 sample_start = input('Ask me anything: ').lower()
 
 model_path = os.path.join('data', model_name)
