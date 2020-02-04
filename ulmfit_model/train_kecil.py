@@ -1,4 +1,5 @@
 import pandas as pd
+import pickle
 from fastai.text import *
 import torch
 
@@ -62,6 +63,7 @@ min_grad_lr = learn.recorder.min_grad_lr
 # fit x epoch
 learn.fit_one_cycle(cyc_len=300, max_lr=slice(min_grad_lr*10, min_grad_lr/10), moms=(0.9, 0.88888888))
 learn.save_encoder('./ft_enc_title')
+torch.save(learn.model.state_dict(), './lm_encoder.pth')
 
 # predict words
 TEXT = "cuci ac"
