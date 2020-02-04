@@ -74,6 +74,9 @@ def compose(TEXT, N_WORDS, temp):
     composed = learn.predict(TEXT, N_WORDS, temperature=temp)
     return composed
 
+def compose_beamsearch(TEXT, N_WORDS, temp):
+    composed = learn.beam_seach(TEXT, N_WORDS, temperature=temp)
+    return composed
 for a in [.2,.5,.75,1]:
     for _ in range(10): 
         print(compose(TEXT, N_WORDS, a))

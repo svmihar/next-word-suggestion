@@ -87,8 +87,13 @@ def stochastic_beam_generator(model, mapping, seq_length, seed_text, n_chars, k 
 
 
 ap = argparse.ArgumentParser()
+<<<<<<< HEAD
 ap.add_argument("-m", "--model", type=str,help='model name', required=True)
 ap.add_argument("-l", "--sample_length", type=int,help="length n words", required=True)
+=======
+ap.add_argument("-m", "--model", type=str,help='model name')
+ap.add_argument("-l", "--sample_length", type=int,help="length n words")
+>>>>>>> eafa92298b556382480547a8ac75a9e40b48bfc4
 args = vars(ap.parse_args())
 
 model_name = args['model']
